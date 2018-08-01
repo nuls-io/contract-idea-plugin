@@ -52,10 +52,10 @@ public class AddAccountPanel extends JPanel {
             this.errorInfo = "The account address can not be null!";
             return false;
         }
-        if (StringUtils.isEmpty(String.valueOf(password))){
-            this.errorInfo = "The password can not be null!";
-            return false;
-        }
+        //if (StringUtils.isEmpty(String.valueOf(password))){
+        //    this.errorInfo = "The password can not be null!";
+        //    return false;
+        //}
         return true;
     }
 

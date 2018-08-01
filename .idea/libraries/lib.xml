@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-swing-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.8.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/feign-jaxrs-9.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/swagger-annotations-1.5.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/feign-core-9.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/feign-gson-9.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.ws.rs-api-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-codec-1.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-core-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-core-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-beanutils-1.9.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/feign-jaxrs2-9.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-swing.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-swing-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

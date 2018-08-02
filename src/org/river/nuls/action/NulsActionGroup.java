@@ -12,13 +12,6 @@ public class NulsActionGroup extends DefaultActionGroup implements DumbAware {
     public NulsActionGroup(){
         super("Nuls Add", true);
         super.setDefaultIcon(true);
-//        super.setShortcutSet(new ShortcutSet() {
-//            @NotNull
-//            @Override
-//            public Shortcut[] getShortcuts() {
-//                return new Shortcut[0];
-//            }
-//        });
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.*;
@@ -23,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.net.URL;
+import java.util.Set;
 
 public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Disposable {
     private static final URL pluginSettingsUrl = GuiUtils.class.getResource("/general/add.png");
@@ -63,6 +65,7 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
         contentTree = createTree();
         treeBuilder = new NulsTreeBuilder(contentTree);
         setContent(ScrollPaneFactory.createScrollPane(contentTree));
+        installPopupActionsMenu();
         loadAllTreeItems();
     }
 
@@ -150,6 +153,14 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
         }
     }
 
+    private void installPopupActionsMenu(){
+        DefaultActionGroup actionPopupGroup = new DefaultActionGroup("NulsExplorerPopupGroup", true);
+        if (ApplicationManager.getApplication() != null) {
+            actionPopupGroup.add(new DeleteTreeItemAction(this));
+        }
+        PopupHandler.installPopupHandler(contentTree, actionPopupGroup, "POPUP", ActionManager.getInstance());
+    }
+
     public void addTreeItem(TreeItem treeItem){
         treeBuilder.addTreeItem(treeItem);
         this.treeItemManager.registerTreeItem(treeItem);
@@ -158,5 +169,13 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
     public void removeTreeItem(TreeItem treeItem){
         treeBuilder.removeTreeItem(treeItem);
         this.treeItemManager.removeTreeItem(treeItem);
+    }
+
+    public Object getSelectedItem() {
+        Set<Object> selectedElements = treeBuilder.getSelectedElements();
+        if (selectedElements.isEmpty()) {
+            return null;
+        }
+        return selectedElements.iterator().next();
     }
 }

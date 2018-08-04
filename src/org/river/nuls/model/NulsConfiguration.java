@@ -11,7 +11,7 @@ import java.util.List;
         name = "NulsConfiguration",
         storages = {
                 @Storage(file = "$PROJECT_FILE$"),
-                @Storage(file = "$PROJECT_CONFIG_DIR$/nulsSettings.xml", scheme = StorageScheme.DIRECTORY_BASED)
+                @Storage(file = "$PROJECT_CONFIG_DIR$/nulsItems.xml", scheme = StorageScheme.DIRECTORY_BASED)
         }
 )
 public class NulsConfiguration implements PersistentStateComponent<NulsConfiguration> {

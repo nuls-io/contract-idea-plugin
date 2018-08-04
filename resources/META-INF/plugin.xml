@@ -20,7 +20,9 @@
   <extensions defaultExtensionNs="com.intellij">
     <annotator language="JAVA" implementationClass="org.river.nuls.annotator.NulsAnnotator"/>
     <toolWindow id="Nuls" icon="/icons/nuls.png" anchor="right" factoryClass="org.river.nuls.toolwindow.NulsToolWindowFactory"/>
+    <projectConfigurable groupId="tools" groupWeight="10" displayName="Nuls" instance="org.river.nuls.toolwindow.viewmodel.NulsConfigurable" id="preferences.nulsOptions"/>
     <projectService serviceInterface="org.river.nuls.model.NulsConfiguration" serviceImplementation="org.river.nuls.model.NulsConfiguration"/>
+    <projectService serviceInterface="org.river.nuls.model.ConfigStorage" serviceImplementation="org.river.nuls.model.ConfigStorage"/>
     <projectService serviceInterface="org.river.nuls.logic.TreeItemManager" serviceImplementation="org.river.nuls.logic.TreeItemManager"/>
     <projectService serviceInterface="org.river.nuls.logic.LogManager" serviceImplementation="org.river.nuls.logic.LogManager"/>
     <projectService serviceInterface="org.river.nuls.logic.Notifier" serviceImplementation="org.river.nuls.logic.Notifier"/>

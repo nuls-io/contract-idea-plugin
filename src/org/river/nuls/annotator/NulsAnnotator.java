@@ -4,6 +4,7 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
+import org.river.nuls.model.ConfigStorage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +19,12 @@ public class NulsAnnotator implements Annotator {
     private List<String> internalClzs = null;
 
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
+        // 文件类型过滤（只检查JAVA文件）
         if (!element.getContainingFile().getVirtualFile().getName().toLowerCase().endsWith(".java")) {
+            return;
+        }
+        // 设定过滤（项目设定需要检查才做检查）
+        if(!ConfigStorage.getInstance(element.getProject()).isNulsSyntaxCheck()){
             return;
         }
 

@@ -13,11 +13,6 @@ import java.util.List;
 
 public class NulsAnnotator implements Annotator {
 
-    /**
-     * 程序自定义类型列表
-     */
-    private List<String> internalClzs = null;
-
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
         // 文件类型过滤（只检查JAVA文件）
         if (!element.getContainingFile().getVirtualFile().getName().toLowerCase().endsWith(".java")) {
@@ -37,9 +32,10 @@ public class NulsAnnotator implements Annotator {
             if (unsupportedKeywords.contains(elementText)){
                 holder.createErrorAnnotation(element, "Unsupported keyword \"" + elementText + "\"!");
             }
+            return;
         }
 
-        // import校验
+        // 可使用的类型
         List<String> supportedTypes = Arrays.asList("io.nuls.contract.sdk.Address",
                                                     "io.nuls.contract.sdk.Block",
                                                     "io.nuls.contract.sdk.Contract",
@@ -60,17 +56,9 @@ public class NulsAnnotator implements Annotator {
                                                     "java.util.ArrayList",
                                                     "java.util.Map",
                                                     "java.util.HashMap");
-        if (element instanceof PsiImportStatement){
-            String importText = ((PsiImportStatement)element).getText();
-            importText = importText.replace("import", "").replace(";", "");
-            importText = importText.trim();
-            if (!supportedTypes.contains(importText)){
-                holder.createErrorAnnotation(element, "Unsupported import \"" + importText + "\"!");
-            }
-        }
-
-        // 声明类型校验
+        // 自定义类型
         List<String> supportClzs = new ArrayList<>();
+        List<String> internalClzs = null;
         if (internalClzs == null){
             String thisFileFullName = element.getContainingFile().getVirtualFile().getPath();
             int pos = thisFileFullName.indexOf("src");
@@ -80,6 +68,18 @@ public class NulsAnnotator implements Annotator {
         }
         supportClzs.addAll(internalClzs);       // 自定义的类型
         supportClzs.addAll(supportedTypes);     // 支持的类型
+
+        // import校验
+        if (element instanceof PsiImportStatement){
+            String importText = ((PsiImportStatement)element).getText();
+            importText = importText.replace("import", "").replace(";", "");
+            importText = importText.trim();
+            if (!supportClzs.contains(importText)){
+                holder.createErrorAnnotation(element, "Unsupported import \"" + importText + "\"!");
+            }
+        }
+
+        // 声明类型校验
         if(element instanceof PsiDeclarationStatement){
             PsiReference psiReference = ((PsiDeclarationStatement)element).findReferenceAt(0);
             if (psiReference != null){

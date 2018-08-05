@@ -12,7 +12,6 @@ import javax.swing.*;
 public class RunDialog extends DialogWrapper {
     private final Project project;
     private final NulsToolWindowPanel parent;
-    private final TreeItemManager treeItemManager;
     private final LogManager logManager;
     private RunPanel runPanel;
 
@@ -20,7 +19,6 @@ public class RunDialog extends DialogWrapper {
         super(parent, true);
         this.project = project;
         this.parent = parent;
-        this.treeItemManager = parent.getTreeItemManager();
         this.logManager = parent.getLogManager();
         init();
     }
@@ -28,7 +26,7 @@ public class RunDialog extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel(){
-        runPanel = new RunPanel(project, parent, treeItemManager, logManager);
+        runPanel = new RunPanel(project, parent, logManager);
         return runPanel;
     }
 

@@ -4,6 +4,8 @@ import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
+import java.util.*;
+
 @State(
         name = "NulsSettings",
         storages = {
@@ -13,6 +15,10 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 )
 
 public class ConfigStorage implements PersistentStateComponent<ConfigStorage> {
+
+    private List<NulsNode> nulsNodes = new LinkedList<>();
+    private List<NulsAccount> nulsAccounts = new LinkedList<>();
+    private List<NulsContract> nulsContracts = new LinkedList<>();
 
     private boolean nulsSyntaxCheck = true;
 
@@ -34,5 +40,67 @@ public class ConfigStorage implements PersistentStateComponent<ConfigStorage> {
 
     public void setNulsSyntaxCheck(boolean nulsSyntaxCheck) {
         this.nulsSyntaxCheck = nulsSyntaxCheck;
+    }
+
+    public List<NulsNode> getNulsNodes() {
+        return nulsNodes;
+    }
+
+    public void setNulsNodes(List<NulsNode> nulsNodes) {
+        this.nulsNodes = nulsNodes;
+    }
+
+    public List<NulsAccount> getNulsAccounts() {
+        return nulsAccounts;
+    }
+
+    public void setNulsAccounts(List<NulsAccount> nulsAccounts) {
+        this.nulsAccounts = nulsAccounts;
+    }
+
+    public List<NulsContract> getNulsContracts() {
+        return nulsContracts;
+    }
+
+    public void setNulsContracts(List<NulsContract> nulsContracts) {
+        this.nulsContracts = nulsContracts;
+    }
+
+    public void addTreeItem(TreeItem treeItem) {
+        if (treeItem instanceof NulsNode){
+            nulsNodes.add((NulsNode)treeItem);
+        }
+        if (treeItem instanceof NulsAccount){
+            nulsAccounts.add((NulsAccount)treeItem);
+        }
+        if (treeItem instanceof NulsContract){
+            nulsContracts.add((NulsContract)treeItem);
+        }
+    }
+
+    public synchronized void removeTreeItem(TreeItem treeItem) {
+        if (treeItem instanceof NulsNode){
+            nulsNodes.remove(treeItem);
+        }
+        if (treeItem instanceof NulsAccount){
+            nulsAccounts.remove(treeItem);
+        }
+        if (treeItem instanceof NulsContract){
+            nulsContracts.remove(treeItem);
+        }
+    }
+
+    public List<TreeItem> getTreeItems() {
+        List<TreeItem> treeItems = new LinkedList<>();
+        for(NulsNode item : nulsNodes){
+            treeItems.add(item);
+        }
+        for(NulsAccount item : nulsAccounts){
+            treeItems.add(item);
+        }
+        for(NulsContract item : nulsContracts){
+            treeItems.add(item);
+        }
+        return treeItems;
     }
 }

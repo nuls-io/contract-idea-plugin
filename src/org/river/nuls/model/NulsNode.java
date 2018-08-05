@@ -87,4 +87,5 @@ public class NulsNode implements TreeItem {
     public String toString(){
         return this.agentAddress;
     }
+
 }

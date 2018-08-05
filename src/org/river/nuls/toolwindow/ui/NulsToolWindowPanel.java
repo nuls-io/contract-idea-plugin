@@ -24,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Disposable {
@@ -126,17 +127,20 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
     }
 
     private java.util.List<TreeItem> loadTreeItemsfromCache() {
-        java.util.List<TreeItem>  treeItems = NulsConfiguration.getInstance(project).getTreeItems();
+//        java.util.List<TreeItem>  treeItems = NulsConfiguration.getInstance(project).getTreeItems();
+//        java.util.List<TreeItem>  treeItems = ConfigStorage.getInstance(project).getTreeItems();
+        ConfigStorage storage = ConfigStorage.getInstance(project);
+        java.util.List<TreeItem>  treeItems = storage.getTreeItems();
         /*====================Test==============*/
 //        NulsAccount account = new NulsAccount();
 //        account.setAddress("Nse3fNhvidpAez94HDhX8x83mbYSMwTh");
 //        account.setPassword("abcd1234");
 //        account.setAlias("AnnaLee");
 //        treeItems.add(account);
-        NulsNode node = new NulsNode();
-        node.setAgentAddress("127.0.0.1:8001");
-        node.setRemark("Local");
-        treeItems.add(node);
+//        NulsNode node = new NulsNode();
+//        node.setAgentAddress("127.0.0.1:8001");
+//        node.setRemark("Local");
+//        treeItems.add(node);
 //        NulsContract contract = new NulsContract();
 //        contract.setAddress("NseDWXTNeCr6bjVAfeWzMFCvDLksh4wn");
 //        contract.setRemark("SimpleContract");
@@ -146,10 +150,12 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
     }
 
     private void loadAllTreeItems() {
-        this.treeItemManager.cleanupTreeItems();
+        // 加载持久数据
         java.util.List<TreeItem> treeItems = loadTreeItemsfromCache();
+        // 重绘树
+        treeBuilder.removeAllTreeItems();
         for (TreeItem treeItem : treeItems) {
-            addTreeItem(treeItem);
+            treeBuilder.addTreeItem(treeItem);
         }
     }
 
@@ -161,14 +167,14 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
         PopupHandler.installPopupHandler(contentTree, actionPopupGroup, "POPUP", ActionManager.getInstance());
     }
 
-    public void addTreeItem(TreeItem treeItem){
+    public synchronized void addTreeItem(TreeItem treeItem){
         treeBuilder.addTreeItem(treeItem);
-        this.treeItemManager.registerTreeItem(treeItem);
+        ConfigStorage.getInstance(project).addTreeItem(treeItem);
     }
 
-    public void removeTreeItem(TreeItem treeItem){
+    public synchronized void removeTreeItem(TreeItem treeItem){
         treeBuilder.removeTreeItem(treeItem);
-        this.treeItemManager.removeTreeItem(treeItem);
+        ConfigStorage.getInstance(project).removeTreeItem(treeItem);
     }
 
     public Object getSelectedItem() {

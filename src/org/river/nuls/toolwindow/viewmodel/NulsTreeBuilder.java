@@ -173,4 +173,9 @@ public class NulsTreeBuilder extends AbstractTreeBuilder {
         treeItems.remove(treeItem);
         queueUpdateFrom(RootDescriptor.ROOT, true);
     }
+
+    public void removeAllTreeItems() {
+        treeItems.removeAll(treeItems);
+        queueUpdateFrom(RootDescriptor.ROOT, true);
+    }
 }

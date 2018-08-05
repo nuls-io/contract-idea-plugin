@@ -58,4 +58,5 @@ public class AddNodePanel extends JPanel {
         node.setRemark(remarkTextField.getText());
         return node;
     }
+
 }

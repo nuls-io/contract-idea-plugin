@@ -59,7 +59,6 @@ public class RunPanel extends JPanel{
 
     private final Project project;
     private final NulsToolWindowPanel nulsToolWindowPanel;
-    private final TreeItemManager treeItemManager;
     private final LogManager logManager;
 
     private String latestUsedNode = "";
@@ -68,10 +67,9 @@ public class RunPanel extends JPanel{
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
-    public RunPanel(Project project, NulsToolWindowPanel nulsToolWindowPanel, TreeItemManager treeItemManager, LogManager logManager){
+    public RunPanel(Project project, NulsToolWindowPanel nulsToolWindowPanel, LogManager logManager){
         this.project = project;
         this.nulsToolWindowPanel = nulsToolWindowPanel;
-        this.treeItemManager = treeItemManager;
         this.logManager = logManager;
 //        setSize(new Dimension(800, 600)); // 无效
         refreshComboBoxes();
@@ -88,14 +86,15 @@ public class RunPanel extends JPanel{
         accountComboBox.removeAllItems();
         nodeComboBox.removeAllItems();
         contractComboBox.removeAllItems();
-        for(TreeItem treeItem : this.treeItemManager.getTreeItems()){
-            if (treeItem instanceof NulsAccount){
-                accountComboBox.addItem(treeItem);
-            }else if(treeItem instanceof NulsNode) {
-                nodeComboBox.addItem(treeItem);
-            }else if (treeItem instanceof NulsContract){
-                contractComboBox.addItem(treeItem);
-            }
+        ConfigStorage storage = ConfigStorage.getInstance(project);
+        for(TreeItem item : storage.getNulsNodes()){
+            nodeComboBox.addItem(item);
+        }
+        for(TreeItem item : storage.getNulsAccounts()){
+            accountComboBox.addItem(item);
+        }
+        for(TreeItem item : storage.getNulsContracts()){
+            contractComboBox.addItem(item);
         }
         if (nodeSelected != null ){
             nodeComboBox.setSelectedItem(nodeSelected);

@@ -1,40 +1,39 @@
 <idea-plugin>
   <id>org.river.nuls.contract.tool</id>
   <name>Nuls</name>
-  <version>1.0</version>
-  <vendor email="support@cqfc.com" url="http://www.cqfc.org">CQFC</vendor>
+  <version>1.03</version>
+  <vendor email="support@nuls.io" url="https://nuls.io/">NULS</vendor>
 
   <description><![CDATA[
-      Nuls Interface Manager<br>
-      <em>Nuls Interface Manager</em>
+      Nuls Contracts Accessor<br>
+      <em>Nuls Contracts Accessor</em>
     ]]></description>
 
   <change-notes><![CDATA[
-      V1.0<br>
-      <em>V1.0 released.</em>
+      V1.03<br>
+      <em>V1.03 released. </em><br>
+      <em>The known bugs fixed. </em><br>
     ]]>
   </change-notes>
 
   <idea-version since-build="173.0"/>
 
+  <project-components>
+    <component>
+      <implementation-class>org.river.nuls.NulsComponent</implementation-class>
+    </component>
+  </project-components>
+
   <extensions defaultExtensionNs="com.intellij">
     <annotator language="JAVA" implementationClass="org.river.nuls.annotator.NulsAnnotator"/>
-    <toolWindow id="Nuls" icon="/icons/nuls.png" anchor="right" factoryClass="org.river.nuls.toolwindow.NulsToolWindowFactory"/>
     <projectConfigurable groupId="tools" groupWeight="10" displayName="Nuls" instance="org.river.nuls.toolwindow.viewmodel.NulsConfigurable" id="preferences.nulsOptions"/>
-    <projectService serviceInterface="org.river.nuls.model.NulsConfiguration" serviceImplementation="org.river.nuls.model.NulsConfiguration"/>
+    <projectService serviceInterface="org.river.nuls.toolwindow.NulsWindowManager" serviceImplementation="org.river.nuls.toolwindow.NulsWindowManager"/>
     <projectService serviceInterface="org.river.nuls.model.ConfigStorage" serviceImplementation="org.river.nuls.model.ConfigStorage"/>
-    <projectService serviceInterface="org.river.nuls.logic.TreeItemManager" serviceImplementation="org.river.nuls.logic.TreeItemManager"/>
     <projectService serviceInterface="org.river.nuls.logic.LogManager" serviceImplementation="org.river.nuls.logic.LogManager"/>
     <projectService serviceInterface="org.river.nuls.logic.Notifier" serviceImplementation="org.river.nuls.logic.Notifier"/>
   </extensions>
 
   <actions>
-    <group id="Nuls.AddGroupPopup"
-           class="org.river.nuls.action.NulsActionGroup"
-           text="Add"
-           description="Add Account or Node"
-           icon="AllIcons.General.Add">
-    </group>
   </actions>
 
 </idea-plugin>

@@ -78,7 +78,7 @@ public class ConfigStorage implements PersistentStateComponent<ConfigStorage> {
         }
     }
 
-    public synchronized void removeTreeItem(TreeItem treeItem) {
+    public void removeTreeItem(TreeItem treeItem) {
         if (treeItem instanceof NulsNode){
             nulsNodes.remove(treeItem);
         }

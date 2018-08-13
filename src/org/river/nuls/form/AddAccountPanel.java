@@ -3,7 +3,6 @@ package org.river.nuls.form;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import org.apache.commons.lang3.StringUtils;
-import org.river.nuls.logic.TreeItemManager;
 import org.river.nuls.model.NulsAccount;
 
 import javax.swing.*;
@@ -20,13 +19,11 @@ public class AddAccountPanel extends JPanel {
     private JLabel aliasLabel;
 
     private final Project project;
-    private final TreeItemManager treeItemManager;
 
     private String errorInfo = "";
 
-    public AddAccountPanel(Project project, TreeItemManager treeItemManager){
+    public AddAccountPanel(Project project){
         this.project = project;
-        this.treeItemManager = treeItemManager;
         setLayout(new BorderLayout());
         add(rootPanel);
     }

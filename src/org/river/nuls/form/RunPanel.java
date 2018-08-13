@@ -18,7 +18,6 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.river.nuls.logic.LogManager;
-import org.river.nuls.logic.TreeItemManager;
 import org.river.nuls.model.*;
 import org.river.nuls.toolwindow.ui.InvokeDialog;
 import org.river.nuls.toolwindow.ui.NulsToolWindowPanel;

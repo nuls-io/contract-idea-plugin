@@ -24,10 +24,10 @@ public class NulsAnnotator implements Annotator {
         }
 
         // 关键字校验
-        List<String> unsupportedKeywords = Arrays.asList("native", "strictfp", "synchronized", "transient", "volatile",
-                                                        "try", "catch", "finally", "throw", "throws",
-                                                        "enum", "assert");
         if (element instanceof PsiKeyword){
+            List<String> unsupportedKeywords = Arrays.asList("native", "strictfp", "synchronized", "transient", "volatile",
+                    "try", "catch", "finally", "throw", "throws",
+                    "enum", "assert");
             String elementText = ((PsiKeyword)element).getText();
             if (unsupportedKeywords.contains(elementText)){
                 holder.createErrorAnnotation(element, "Unsupported keyword \"" + elementText + "\"!");
@@ -35,64 +35,83 @@ public class NulsAnnotator implements Annotator {
             return;
         }
 
-        // 可使用的类型
-        List<String> supportedTypes = Arrays.asList("io.nuls.contract.sdk.Address",
-                                                    "io.nuls.contract.sdk.Block",
-                                                    "io.nuls.contract.sdk.Contract",
-                                                    "io.nuls.contract.sdk.Event",
-                                                    "io.nuls.contract.sdk.Msg",
-                                                    "io.nuls.contract.sdk.Utils",
-                                                    "java.lang.Boolean",
-                                                    "java.lang.Byte",
-                                                    "java.lang.Short",
-                                                    "java.lang.Character",
-                                                    "java.lang.Integer",
-                                                    "java.lang.Long",
-                                                    "java.lang.Float",
-                                                    "java.lang.Double",
-                                                    "java.lang.String",
-                                                    "java.math.BigInteger",
-                                                    "java.util.List",
-                                                    "java.util.ArrayList",
-                                                    "java.util.Map",
-                                                    "java.util.HashMap");
-        // 自定义类型
-        List<String> supportClzs = new ArrayList<>();
-        List<String> internalClzs = null;
-        if (internalClzs == null){
-            String thisFileFullName = element.getContainingFile().getVirtualFile().getPath();
-            int pos = thisFileFullName.indexOf("src");
-            String baseDir = thisFileFullName.substring(0, pos + 3);
-            List<File> files = getJavaFiles(baseDir);
-            internalClzs = listClzFullName(files);
-        }
-        supportClzs.addAll(internalClzs);       // 自定义的类型
-        supportClzs.addAll(supportedTypes);     // 支持的类型
-
-        // import校验
-        if (element instanceof PsiImportStatement){
-            String importText = ((PsiImportStatement)element).getText();
-            importText = importText.replace("import", "").replace(";", "");
-            importText = importText.trim();
-            if (!supportClzs.contains(importText)){
-                holder.createErrorAnnotation(element, "Unsupported import \"" + importText + "\"!");
+        if (element instanceof PsiImportStatement || element instanceof PsiDeclarationStatement){
+            // 可使用的类型
+            List<String> supportedTypes = Arrays.asList(
+                    "io.nuls.contract.sdk.Address",
+                    "io.nuls.contract.sdk.Block",
+                    "io.nuls.contract.sdk.Contract",
+                    "io.nuls.contract.sdk.Event",
+                    "io.nuls.contract.sdk.Msg",
+                    "io.nuls.contract.sdk.Utils",
+                    "java.lang.Boolean",
+                    "java.lang.Byte",
+                    "java.lang.Short",
+                    "java.lang.Character",
+                    "java.lang.Integer",
+                    "java.lang.Long",
+                    "java.lang.Float",
+                    "java.lang.Double",
+                    "java.lang.String",
+                    "java.math.BigInteger",
+                    "java.util.List",
+                    "java.util.ArrayList",
+                    "java.util.Map",
+                    "java.util.HashMap");
+            // 自定义类型
+            List<String> supportClzs = new ArrayList<>();
+            List<String> internalClzs = null;
+            if (internalClzs == null){
+                String thisFileFullName = element.getContainingFile().getVirtualFile().getPath();
+                int pos;
+                List<File> files = new ArrayList<>();
+                if (thisFileFullName.indexOf("src/test/java") > 0){
+                    pos = thisFileFullName.indexOf("src/test/java");
+                    String testJavaBaseUrl = thisFileFullName.substring(0, pos + 13);
+                    files.addAll(getJavaFiles(testJavaBaseUrl));
+                    String mainJavaBaseUrl = thisFileFullName.substring(0, pos) + "src/main/java";
+                    files.addAll(getJavaFiles(mainJavaBaseUrl));
+                }else if (thisFileFullName.indexOf("src/main/java") > 0){
+                    pos = thisFileFullName.indexOf("src/main/java");
+                    String baseUrl = thisFileFullName.substring(0, pos + 13);
+                    files.addAll(getJavaFiles(baseUrl));
+                }else if (thisFileFullName.indexOf("src") > 0) {
+                    pos = thisFileFullName.indexOf("src");
+                    String baseDir = thisFileFullName.substring(0, pos + 3);
+                    files.addAll(getJavaFiles(baseDir));
+                }
+                internalClzs = listClzFullName(files);
             }
-        }
+            supportClzs.addAll(internalClzs);       // 自定义的类型
+            supportClzs.addAll(supportedTypes);     // 支持的类型
 
-        // 声明类型校验
-        if(element instanceof PsiDeclarationStatement){
-            PsiReference psiReference = ((PsiDeclarationStatement)element).findReferenceAt(0);
-            if (psiReference != null){
-                String typeText = psiReference.getCanonicalText();
-                if (typeText.contains("<")){
-                    typeText = typeText.substring(0, typeText.indexOf("<"));
+            // import校验
+            if (element instanceof PsiImportStatement){
+                String importText = ((PsiImportStatement)element).getText();
+                importText = importText.replace("import", "").replace(";", "");
+                importText = importText.trim();
+                if (!supportClzs.contains(importText)){
+                    holder.createErrorAnnotation(element, "Unsupported import \"" + importText + "\"!");
                 }
-                if (typeText.contains("[")){
-                    typeText = typeText.substring(0, typeText.indexOf("["));
+                return;
+            }
+
+            // 声明类型校验
+            if(element instanceof PsiDeclarationStatement){
+                PsiReference psiReference = ((PsiDeclarationStatement)element).findReferenceAt(0);
+                if (psiReference != null){
+                    String typeText = psiReference.getCanonicalText();
+                    if (typeText.contains("<")){
+                        typeText = typeText.substring(0, typeText.indexOf("<"));
+                    }
+                    if (typeText.contains("[")){
+                        typeText = typeText.substring(0, typeText.indexOf("["));
+                    }
+                    if (!supportClzs.contains(typeText)){
+                        holder.createErrorAnnotation(element, "Unsupported type \"" + typeText + "\"!");
+                    }
                 }
-                if (!supportClzs.contains(typeText)){
-                    holder.createErrorAnnotation(element, "Unsupported type \"" + typeText + "\"!");
-                }
+                return;
             }
         }
     }
@@ -105,6 +124,9 @@ public class NulsAnnotator implements Annotator {
     private List<File> getJavaFiles(String path) {
         List<File> fileList = new ArrayList<>();
         File file = new File(path);
+        if (!file.exists()){
+            return fileList;
+        }
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (int i = 0; i < files.length; i++) {
@@ -134,11 +156,16 @@ public class NulsAnnotator implements Annotator {
         List<String> list = new ArrayList<>();
         if (files != null){
             for (File file : files) {
-                String fullName = file.getAbsolutePath();
-                if (fullName.contains("src")){
+                String fullName = file.getAbsolutePath().replaceAll("\\\\", "/");
+                if (fullName.contains("src/main/java")){
+                    String relativePath = fullName.substring(fullName.indexOf("src/main/java") + 14, fullName.length());
+                    list.add(relativePath.replaceAll(".java", "").replaceAll("/", "."));
+                }else if (fullName.contains("src/test/java")){
+                    String relativePath = fullName.substring(fullName.indexOf("src/test/java") + 14, fullName.length());
+                    list.add(relativePath.replaceAll(".java", "").replaceAll("/", "."));
+                }else if(fullName.contains("src")){
                     String relativePath = fullName.substring(fullName.indexOf("src") + 4, fullName.length());
-                    list.add(relativePath.replaceAll("\\\\", ".")
-                                .replaceAll("/", ".").replaceAll(".java", ""));
+                    list.add(relativePath.replaceAll(".java", "").replaceAll("/", "."));
                 }
             }
         }

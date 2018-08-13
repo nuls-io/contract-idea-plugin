@@ -4,17 +4,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
 import org.river.nuls.form.AddContractPanel;
-import org.river.nuls.form.AddNodePanel;
-import org.river.nuls.logic.TreeItemManager;
 import org.river.nuls.model.NulsContract;
-import org.river.nuls.model.NulsNode;
 
 import javax.swing.*;
 
 public class AddContractDialog extends DialogWrapper {
     private final Project project;
     private final NulsToolWindowPanel parent;
-    private final TreeItemManager treeItemManager;
     private final NulsContract contract;
     private AddContractPanel addContractPanel;
 
@@ -22,7 +18,6 @@ public class AddContractDialog extends DialogWrapper {
         super(parent, true);
         this.project = project;
         this.parent = parent;
-        this.treeItemManager = parent.getTreeItemManager();
         this.contract = contract;
         init();
     }
@@ -30,7 +25,7 @@ public class AddContractDialog extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel(){
-        addContractPanel = new AddContractPanel(project, treeItemManager);
+        addContractPanel = new AddContractPanel(project);
         addContractPanel.loadNodeData(contract);
         return addContractPanel;
     }

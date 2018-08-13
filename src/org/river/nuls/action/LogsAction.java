@@ -4,6 +4,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.util.IconLoader;
 import org.river.nuls.form.LogsPanel;
 import org.river.nuls.toolwindow.ui.LogsDialog;
 import org.river.nuls.toolwindow.ui.NulsToolWindowPanel;
@@ -13,7 +14,7 @@ public class LogsAction extends AnAction implements DumbAware {
     private final NulsToolWindowPanel nulsToolWindowPanel;
 
     public LogsAction(NulsToolWindowPanel nulsToolWindowPanel) {
-        super(NulsBundle.message("toolwindow.action.log"), NulsBundle.message("toolwindow.action.log"), AllIcons.Debugger.Console_log);
+        super(NulsBundle.message("toolwindow.action.log"), NulsBundle.message("toolwindow.action.log"), IconLoader.findIcon("/icons/balloon_green_16.png"));
         this.nulsToolWindowPanel = nulsToolWindowPanel;
     }
     @Override

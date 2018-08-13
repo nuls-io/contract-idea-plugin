@@ -7,16 +7,20 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.ui.*;
+import com.intellij.ui.GuiUtils;
+import com.intellij.ui.PopupHandler;
+import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.TreeSpeedSearch;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.ui.JBUI;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.river.nuls.action.*;
 import org.river.nuls.logic.LogManager;
-import org.river.nuls.logic.TreeItemManager;
 import org.river.nuls.logic.Notifier;
-import org.river.nuls.model.*;
+import org.river.nuls.model.ConfigStorage;
+import org.river.nuls.model.NulsAccount;
+import org.river.nuls.model.NulsNode;
+import org.river.nuls.model.TreeItem;
 import org.river.nuls.toolwindow.viewmodel.NulsTreeBuilder;
 
 import javax.swing.*;
@@ -24,7 +28,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.Set;
 
 public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Disposable {
@@ -32,14 +35,9 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
     private Tree contentTree;
     private NulsTreeBuilder treeBuilder;
     private final Project project;
-    private final TreeItemManager treeItemManager;
     private final LogManager logManager;
     private final Notifier notifier;
 
-
-    public TreeItemManager getTreeItemManager() {
-        return treeItemManager;
-    }
     public LogManager getLogManager() {
         return logManager;
     }
@@ -49,11 +47,10 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
 
     }
 
-    public NulsToolWindowPanel(@NotNull Project project, TreeItemManager manager, LogManager logManager, Notifier notifier) {
+    public NulsToolWindowPanel(@NotNull Project project, LogManager logManager, Notifier notifier) {
         super(true, true);
 
         this.project = project;
-        this.treeItemManager = manager;
         this.logManager = logManager;
         this.notifier = notifier;
 
@@ -71,8 +68,9 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
     }
 
     private JPanel createToolbarPanel() {
-        final NulsActionGroup nulsAddGroup = (NulsActionGroup)ActionManager.getInstance().getAction("Nuls.AddGroupPopup");
-        nulsAddGroup.removeAll();
+//        final NulsActionGroup nulsAddGroup = (NulsActionGroup)ActionManager.getInstance().getAction("Nuls.AddGroupPopup");
+//        nulsAddGroup.removeAll();
+        final NulsActionGroup nulsAddGroup = new NulsActionGroup();
         nulsAddGroup.add(new AddNodeAction(this));
         nulsAddGroup.add(new AddAccountAction(this));
         nulsAddGroup.add(new AddContractAction(this));
@@ -127,32 +125,15 @@ public class NulsToolWindowPanel extends SimpleToolWindowPanel implements Dispos
     }
 
     private java.util.List<TreeItem> loadTreeItemsfromCache() {
-//        java.util.List<TreeItem>  treeItems = NulsConfiguration.getInstance(project).getTreeItems();
-//        java.util.List<TreeItem>  treeItems = ConfigStorage.getInstance(project).getTreeItems();
         ConfigStorage storage = ConfigStorage.getInstance(project);
         java.util.List<TreeItem>  treeItems = storage.getTreeItems();
-        /*====================Test==============*/
-//        NulsAccount account = new NulsAccount();
-//        account.setAddress("Nse3fNhvidpAez94HDhX8x83mbYSMwTh");
-//        account.setPassword("abcd1234");
-//        account.setAlias("AnnaLee");
-//        treeItems.add(account);
-//        NulsNode node = new NulsNode();
-//        node.setAgentAddress("127.0.0.1:8001");
-//        node.setRemark("Local");
-//        treeItems.add(node);
-//        NulsContract contract = new NulsContract();
-//        contract.setAddress("NseDWXTNeCr6bjVAfeWzMFCvDLksh4wn");
-//        contract.setRemark("SimpleContract");
-//        treeItems.add(contract);
-        /*====================Test==============*/
         return treeItems;
     }
 
     private void loadAllTreeItems() {
-        // º”‘ÿ≥÷æ√ ˝æ›
+        // Âä†ËΩΩÊåÅ‰πÖÊï∞ÊçÆ
         java.util.List<TreeItem> treeItems = loadTreeItemsfromCache();
-        // ÷ÿªÊ ˜
+        // ÈáçÁªòÊ†ë
         treeBuilder.removeAllTreeItems();
         for (TreeItem treeItem : treeItems) {
             treeBuilder.addTreeItem(treeItem);

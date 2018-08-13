@@ -3,9 +3,7 @@ package org.river.nuls.form;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import org.apache.commons.lang3.StringUtils;
-import org.river.nuls.logic.TreeItemManager;
 import org.river.nuls.model.NulsContract;
-import org.river.nuls.model.NulsNode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,13 +17,11 @@ public class AddContractPanel extends JPanel {
     private JLabel remarkLabel;
 
     private final Project project;
-    private final TreeItemManager treeItemManager;
 
     private String errorInfo = "";
 
-    public AddContractPanel(Project project, TreeItemManager treeItemManager){
+    public AddContractPanel(Project project){
         this.project = project;
-        this.treeItemManager = treeItemManager;
         setLayout(new BorderLayout());
         add(rootPanel);
     }

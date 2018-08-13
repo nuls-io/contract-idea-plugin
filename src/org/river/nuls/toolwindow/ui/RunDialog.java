@@ -5,7 +5,6 @@ import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
 import org.river.nuls.form.RunPanel;
 import org.river.nuls.logic.LogManager;
-import org.river.nuls.logic.TreeItemManager;
 
 import javax.swing.*;
 

@@ -1,5 +1,6 @@
 package org.river.nuls.action;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.Shortcut;
@@ -12,6 +13,10 @@ public class NulsActionGroup extends DefaultActionGroup implements DumbAware {
     public NulsActionGroup(){
         super("Nuls Add", true);
         super.setDefaultIcon(true);
+
+        getTemplatePresentation().setIcon(AllIcons.General.Add);
+        getTemplatePresentation().setText("Add");
+        getTemplatePresentation().setDescription("Add Nuls Elements");
     }
 
     @Override

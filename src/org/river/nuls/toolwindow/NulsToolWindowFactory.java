@@ -7,7 +7,6 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentManager;
 import org.river.nuls.logic.LogManager;
-import org.river.nuls.logic.TreeItemManager;
 import org.river.nuls.logic.Notifier;
 import org.river.nuls.toolwindow.ui.NulsToolWindowPanel;
 
@@ -22,7 +21,6 @@ public class NulsToolWindowFactory implements ToolWindowFactory {
     // Create the tool window content.
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         NulsToolWindowPanel explorer = new NulsToolWindowPanel(project,
-                                                                TreeItemManager.getInstance(project),
                                                                 LogManager.getInstance(project),
                                                                 Notifier.getInstance(project));
         final ContentManager contentManager = toolWindow.getContentManager();
@@ -30,7 +28,5 @@ public class NulsToolWindowFactory implements ToolWindowFactory {
         contentManager.addContent(content);
         Disposer.register(project, explorer);
     }
-
-
 }
 

@@ -2,18 +2,15 @@ package org.river.nuls.toolwindow.ui;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import org.river.nuls.form.AddAccountPanel;
-import org.river.nuls.logic.TreeItemManager;
-import org.river.nuls.model.NulsAccount;
-
 import org.jetbrains.annotations.Nullable;
+import org.river.nuls.form.AddAccountPanel;
+import org.river.nuls.model.NulsAccount;
 
 import javax.swing.*;
 
 public class AddAccountDialog extends DialogWrapper {
     private final Project project;
     private final NulsToolWindowPanel parent;
-    private final TreeItemManager treeItemManager;
     private final NulsAccount account;
     private AddAccountPanel addAccountPanel;
 
@@ -21,7 +18,6 @@ public class AddAccountDialog extends DialogWrapper {
         super(parent, true);
         this.project = project;
         this.parent = parent;
-        this.treeItemManager = parent.getTreeItemManager();
         this.account = account;
         init();
     }
@@ -29,7 +25,7 @@ public class AddAccountDialog extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel(){
-        addAccountPanel = new AddAccountPanel(project, treeItemManager);
+        addAccountPanel = new AddAccountPanel(project);
         addAccountPanel.loadAccountData(account);
         return addAccountPanel;
     }

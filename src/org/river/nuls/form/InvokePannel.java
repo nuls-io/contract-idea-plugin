@@ -66,7 +66,7 @@ public class InvokePannel extends JPanel {
         Long value = 0L;
         String strGas = gasTextField.getText();
         String strPrice = priceTextField.getText();
-        String strValue = valueTextField.getToolTipText();
+        String strValue = valueTextField.getText();
         if (StringUtils.isNotEmpty(strGas)){
             try{
                 gas = Long.parseLong(strGas);
@@ -100,7 +100,7 @@ public class InvokePannel extends JPanel {
         Long value = 0L;
         String strGas = gasTextField.getText();
         String strPrice = priceTextField.getText();
-        String strValue = valueTextField.getToolTipText();
+        String strValue = valueTextField.getText();
         if (StringUtils.isNotEmpty(strGas)){
             gas = Long.parseLong(strGas);
         }

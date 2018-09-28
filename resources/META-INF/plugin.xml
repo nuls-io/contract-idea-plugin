@@ -1,39 +1,51 @@
 <idea-plugin>
-  <id>org.river.nuls.contract.tool</id>
-  <name>Nuls</name>
-  <version>1.03</version>
-  <vendor email="support@nuls.io" url="https://nuls.io/">NULS</vendor>
+    <id>org.river.nuls.contract.tool</id>
+    <name>Nuls</name>
+    <version>1.1.0</version>
+    <vendor email="support@nuls.io" url="https://nuls.io/">NULS</vendor>
 
-  <description><![CDATA[
+    <description><![CDATA[
       Nuls Contracts Accessor<br>
       <em>Nuls Contracts Accessor</em>
     ]]></description>
 
-  <change-notes><![CDATA[
-      V1.03<br>
-      <em>V1.03 released. </em><br>
+    <change-notes><![CDATA[
+      V1.1.0<br>
+      <em>V1.1.0 released. </em><br>
       <em>The known bugs fixed. </em><br>
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <idea-version since-build="173.0"/>
+    <idea-version since-build="173.0"/>
 
-  <project-components>
-    <component>
-      <implementation-class>org.river.nuls.NulsComponent</implementation-class>
-    </component>
-  </project-components>
+    <project-components>
+        <component>
+            <implementation-class>io.nuls.contract.idea.plugin.NulsComponent</implementation-class>
+        </component>
+    </project-components>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <annotator language="JAVA" implementationClass="org.river.nuls.annotator.NulsAnnotator"/>
-    <projectConfigurable groupId="tools" groupWeight="10" displayName="Nuls" instance="org.river.nuls.toolwindow.viewmodel.NulsConfigurable" id="preferences.nulsOptions"/>
-    <projectService serviceInterface="org.river.nuls.toolwindow.NulsWindowManager" serviceImplementation="org.river.nuls.toolwindow.NulsWindowManager"/>
-    <projectService serviceInterface="org.river.nuls.model.ConfigStorage" serviceImplementation="org.river.nuls.model.ConfigStorage"/>
-    <projectService serviceInterface="org.river.nuls.logic.LogManager" serviceImplementation="org.river.nuls.logic.LogManager"/>
-    <projectService serviceInterface="org.river.nuls.logic.Notifier" serviceImplementation="org.river.nuls.logic.Notifier"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <annotator language="JAVA" implementationClass="io.nuls.contract.idea.plugin.annotator.NulsAnnotator"/>
+        <projectConfigurable groupId="tools" groupWeight="10" displayName="Nuls"
+                             instance="io.nuls.contract.idea.plugin.toolwindow.viewmodel.NulsConfigurable"
+                             id="preferences.nulsOptions"/>
+        <projectService serviceInterface="io.nuls.contract.idea.plugin.toolwindow.NulsWindowManager"
+                        serviceImplementation="io.nuls.contract.idea.plugin.toolwindow.NulsWindowManager"/>
+        <projectService serviceInterface="io.nuls.contract.idea.plugin.model.ConfigStorage"
+                        serviceImplementation="io.nuls.contract.idea.plugin.model.ConfigStorage"/>
+        <projectService serviceInterface="io.nuls.contract.idea.plugin.logic.LogManager"
+                        serviceImplementation="io.nuls.contract.idea.plugin.logic.LogManager"/>
+        <projectService serviceInterface="io.nuls.contract.idea.plugin.logic.Notifier"
+                        serviceImplementation="io.nuls.contract.idea.plugin.logic.Notifier"/>
+        <moduleBuilder builderClass="io.nuls.contract.idea.plugin.module.NulsModuleBuilder" id="NULS_MODULE"
+                       order="first"/>
+        <framework.type implementation="io.nuls.contract.idea.plugin.framework.NulsFramework"/>
+    </extensions>
 
-  <actions>
-  </actions>
+    <actions>
+        <action id="Nuls.New" class="io.nuls.contract.idea.plugin.action.NewFileGroupAction">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+    </actions>
 
 </idea-plugin>

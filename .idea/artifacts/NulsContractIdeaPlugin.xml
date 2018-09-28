@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="NulsContractIdeaPlugin">
+    <output-path>$PROJECT_DIR$/out/artifacts/NulsContractIdeaPlugin</output-path>
+    <root id="root">
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="lib" />
+        <element id="archive" name="contract-idea-plugin.jar">
+          <element id="module-output" name="contract-idea-plugin" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

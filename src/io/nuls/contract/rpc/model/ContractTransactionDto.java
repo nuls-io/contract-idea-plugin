@@ -26,8 +26,6 @@ package io.nuls.contract.rpc.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 import java.util.Map;
@@ -201,10 +199,5 @@ public class ContractTransactionDto {
 
     public void setContractResult(ContractResultDto contractResult) {
         this.contractResult = contractResult;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

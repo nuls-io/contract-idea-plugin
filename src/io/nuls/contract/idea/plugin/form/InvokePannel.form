@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="io.nuls.contract.idea.plugin.form.InvokePannel">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="120" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties>
+      <foreground color="-1107680"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="fa41b" class="javax.swing.JLabel" binding="gasLabel">
+        <constraints>
+          <grid row="110" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Gas:"/>
+        </properties>
+      </component>
+      <component id="e8967" class="javax.swing.JTextField" binding="gasTextField">
+        <constraints>
+          <grid row="110" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="57b63" class="javax.swing.JLabel" binding="priceLabel">
+        <constraints>
+          <grid row="112" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Price:"/>
+        </properties>
+      </component>
+      <component id="20a0" class="javax.swing.JTextField" binding="priceTextField">
+        <constraints>
+          <grid row="112" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="530fa" class="javax.swing.JLabel" binding="valueLabel">
+        <constraints>
+          <grid row="114" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Value:"/>
+        </properties>
+      </component>
+      <component id="1d492" class="javax.swing.JTextField" binding="valueTextField">
+        <constraints>
+          <grid row="114" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="c041d" class="javax.swing.JLabel" binding="remarkLabel">
+        <constraints>
+          <grid row="116" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Remark:"/>
+        </properties>
+      </component>
+      <component id="82a97" class="javax.swing.JTextField" binding="remarkTextField">
+        <constraints>
+          <grid row="116" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="7fbee" class="javax.swing.JLabel" binding="gasError">
+        <constraints>
+          <grid row="111" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-1107680"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="c07a9" class="javax.swing.JLabel" binding="priceError">
+        <constraints>
+          <grid row="113" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-1107680"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="29035" class="javax.swing.JLabel" binding="valueError">
+        <constraints>
+          <grid row="115" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-1107680"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="28820" class="javax.swing.JLabel" binding="feedbackLabel">
+        <constraints>
+          <grid row="117" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

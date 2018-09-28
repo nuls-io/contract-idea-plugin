@@ -23,9 +23,6 @@
  */
 package io.nuls.contract.rpc.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
  * @author: PierreLuo
  */
@@ -39,7 +36,7 @@ public class CallContractDataDto {
     private String methodName;
     private String methodDesc;
     private byte argsCount;
-    private String[] args;
+    private String[][] args;
 
     public String getSender() {
         return sender;
@@ -105,16 +102,11 @@ public class CallContractDataDto {
         this.argsCount = argsCount;
     }
 
-    public String[] getArgs() {
+    public String[][] getArgs() {
         return args;
     }
 
-    public void setArgs(String[] args) {
+    public void setArgs(String[][] args) {
         this.args = args;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

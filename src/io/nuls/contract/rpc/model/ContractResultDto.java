@@ -25,10 +25,9 @@ package io.nuls.contract.rpc.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,26 +36,44 @@ import java.util.List;
 @ApiModel(value = "contractResultDtoJSON")
 public class ContractResultDto {
 
+    @ApiModelProperty(name = "success", value = "合约执行是否成功")
+    private boolean success;
+
+    @ApiModelProperty(name = "errorMessage", value = "执行失败信息")
+    private String errorMessage;
+
     @ApiModelProperty(name = "contractAddress", value = "合约地址")
     private String contractAddress;
 
     @ApiModelProperty(name = "result", value = "合约执行结果")
     private String result;
 
+    @ApiModelProperty(name = "gasUsed", value = "GasLimit")
+    private long gasLimit;
+
     @ApiModelProperty(name = "gasUsed", value = "已使用Gas")
     private long gasUsed;
+
+    @ApiModelProperty(name = "price", value = "单价")
+    private long price;
+
+    @ApiModelProperty(name = "totalFee", value = "交易总手续费")
+    private BigInteger totalFee;
+
+    @ApiModelProperty(name = "txSizeFee", value = "交易大小手续费")
+    private BigInteger txSizeFee;
+
+    @ApiModelProperty(name = "actualContractFee", value = "实际执行合约手续费")
+    private BigInteger actualContractFee;
+
+    @ApiModelProperty(name = "refundFee", value = "退还的手续费")
+    private BigInteger refundFee;
 
     @ApiModelProperty(name = "stateRoot", value = "状态根")
     private String stateRoot;
 
     @ApiModelProperty(name = "value", value = "交易附带的货币量")
     private long value;
-
-    @ApiModelProperty(name = "error", value = "合约执行是否失败")
-    private boolean error;
-
-    @ApiModelProperty(name = "errorMessage", value = "执行失败信息")
-    private String errorMessage;
 
     @ApiModelProperty(name = "stackTrace", value = "堆栈踪迹")
     private String stackTrace;
@@ -68,13 +85,33 @@ public class ContractResultDto {
     private BigInteger nonce;
 
     @ApiModelProperty(name = "transfers", value = "合约内部转账")
-    private List<ContractTransferDto> transfers = null;
+    private List<ContractTransferDto> transfers;
 
     @ApiModelProperty(name = "events", value = "合约事件")
-    private List<String> events = null;
+    private List<String> events;
+
+    @ApiModelProperty(name = "tokenTransfers", value = "合约代币转账")
+    private List<ContractTokenTransferDto> tokenTransfers;
+
+    @ApiModelProperty(name = "name", value = "代币名称")
+    private String name;
+
+    @ApiModelProperty(name = "symbol", value = "代币符号")
+    private String symbol;
+
+    @ApiModelProperty(name = "decimals", value = "货币小数位精度")
+    private long decimals;
 
     @ApiModelProperty(name = "remark", value = "备注")
     private String remark;
+
+    public List<ContractTokenTransferDto> getTokenTransfers() {
+        return tokenTransfers == null ? new ArrayList<>() : tokenTransfers;
+    }
+
+    public void setTokenTransfers(List<ContractTokenTransferDto> tokenTransfers) {
+        this.tokenTransfers = tokenTransfers;
+    }
 
     public String getContractAddress() {
         return contractAddress;
@@ -116,12 +153,12 @@ public class ContractResultDto {
         this.value = value;
     }
 
-    public boolean isError() {
-        return error;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setError(boolean error) {
-        this.error = error;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getErrorMessage() {
@@ -157,7 +194,7 @@ public class ContractResultDto {
     }
 
     public List<ContractTransferDto> getTransfers() {
-        return transfers;
+        return transfers == null ? new ArrayList<>() : transfers;
     }
 
     public void setTransfers(List<ContractTransferDto> transfers) {
@@ -180,8 +217,75 @@ public class ContractResultDto {
         this.remark = remark;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    public long getGasLimit() {
+        return gasLimit;
+    }
+
+    public void setGasLimit(long gasLimit) {
+        this.gasLimit = gasLimit;
+    }
+
+    public BigInteger getTotalFee() {
+        return totalFee;
+    }
+
+    public void setTotalFee(BigInteger totalFee) {
+        this.totalFee = totalFee;
+    }
+
+    public BigInteger getRefundFee() {
+        return refundFee;
+    }
+
+    public void setRefundFee(BigInteger refundFee) {
+        this.refundFee = refundFee;
+    }
+
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
+        this.price = price;
+    }
+
+    public BigInteger getActualContractFee() {
+        return actualContractFee;
+    }
+
+    public void setActualContractFee(BigInteger actualContractFee) {
+        this.actualContractFee = actualContractFee;
+    }
+
+    public BigInteger getTxSizeFee() {
+        return txSizeFee;
+    }
+
+    public void setTxSizeFee(BigInteger txSizeFee) {
+        this.txSizeFee = txSizeFee;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public long getDecimals() {
+        return decimals;
+    }
+
+    public void setDecimals(long decimals) {
+        this.decimals = decimals;
     }
 }

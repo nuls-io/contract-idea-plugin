@@ -23,9 +23,6 @@
  */
 package io.nuls.contract.rpc.model;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
  * @author: PierreLuo
  */
@@ -47,10 +44,5 @@ public class DeleteContractDataDto {
 
     public void setContractAddress(String contractAddress) {
         this.contractAddress = contractAddress;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

@@ -23,18 +23,18 @@
  */
 package io.nuls.contract.rpc.resource;
 
+import io.nuls.contract.entity.ContractInfoDto;
 import io.nuls.contract.rpc.form.*;
-import io.nuls.contract.rpc.model.ContractAccountUtxoDto;
-import io.nuls.contract.rpc.model.ContractResultDto;
-import io.nuls.contract.rpc.model.ContractTransactionDto;
-import io.nuls.contract.rpc.model.ContractTransactionInfoDto;
+import io.nuls.contract.rpc.model.*;
 import io.nuls.contract.rpc.result.ContractBalanceResult;
 import io.nuls.contract.rpc.result.ContractCreateResult;
 import io.nuls.contract.rpc.result.ContractInfoResult;
 import io.nuls.kernel.model.RpcClientResult;
 import io.swagger.annotations.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -55,6 +55,24 @@ public interface ContractResource {
     RpcClientResult<ContractCreateResult> createContract(@ApiParam(name = "createForm", value = "创建智能合约", required = true) ContractCreate create);
 
     @POST
+    @Path("/constructor")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "获取智能合约构造函数")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success", response = ContractInfoDto.class)
+    })
+    RpcClientResult<ContractInfoDto> contractConstructor(@ApiParam(name = "createForm", value = "创建智能合约", required = true) ContractCode code);
+
+    @POST
+    @Path("/precreate")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "测试创建智能合约")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    RpcClientResult preCreateContract(@ApiParam(name = "preCreateForm", value = "测试创建智能合约", required = true) PreContractCreate create);
+
+    @POST
     @Path("/imputedgas/create")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "估算创建智能合约的Gas消耗")
@@ -73,13 +91,31 @@ public interface ContractResource {
     RpcClientResult callContract(@ApiParam(name = "callFrom", value = "调用智能合约", required = true) ContractCall call);
 
     @POST
-    @Path("/constant")
+    @Path("/transfer")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "向智能合约地址转账")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    RpcClientResult transfer(@ApiParam(name = "transferFrom", value = "向合约地址转账", required = true) ContractTransfer transfer);
+
+    @POST
+    @Path("/transfer/fee")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "向智能合约地址转账手续费")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    RpcClientResult transferFee(@ApiParam(name = "transferFeeFrom", value = "向合约地址转账手续费", required = true) ContractTransferFee transferFee);
+
+    @POST
+    @Path("/view")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "调用不上链的智能合约函数")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success")
     })
-    RpcClientResult callConstantContract(
+    RpcClientResult invokeViewContract(
             @ApiParam(name = "constantCallForm", value = "调用不上链的智能合约函数表单数据", required = true) ContractConstantCall constantCall);
 
     @POST
@@ -90,6 +126,15 @@ public interface ContractResource {
             @ApiResponse(code = 200, message = "success")
     })
     RpcClientResult imputedGasCallContract(@ApiParam(name = "imputedGasCallForm", value = "估算调用智能合约的Gas消耗", required = true) ImputedGasContractCall call);
+
+    @POST
+    @Path("/imputedprice")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "估算智能合约的price")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    RpcClientResult imputedPrice(@ApiParam(name = "imputedPriceForm", value = "估算智能合约的price", required = true) ImputedPrice imputedPrice);
 
     @POST
     @Path("/delete")
@@ -117,7 +162,9 @@ public interface ContractResource {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success")
     })
-    RpcClientResult<ContractInfoResult> getContractInfo(@ApiParam(name = "address", value = "合约地址", required = true) @PathParam("address") String contractAddress);
+    RpcClientResult<ContractInfoResult> getContractInfo(
+            @ApiParam(name = "address", value = "合约地址", required = true) @PathParam("address") String contractAddress,
+            @ApiParam(name = "accountAddress", value = "钱包账户地址", required = false) @QueryParam("accountAddress") String accountAddress);
 
     @GET
     @Path("/balance/{address}")
@@ -149,7 +196,7 @@ public interface ContractResource {
                                                           @PathParam("hash") String hash);
 
     @GET
-    @Path("/limit/{address}/{limit}")
+    @Path("/limit/{address}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "根据address和limit查询合约UTXO")
     @ApiResponses(value = {
@@ -157,7 +204,7 @@ public interface ContractResource {
     })
     RpcClientResult getUtxoByAddressAndLimit(
             @ApiParam(name = "address", value = "地址", required = true) @PathParam("address") String address,
-            @ApiParam(name = "limit", value = "数量", required = true) @PathParam("limit") Integer limit);
+            @ApiParam(name = "limit", value = "数量(不填查所有)", required = false) @QueryParam("limit") Integer limit);
 
     @GET
     @Path("/amount/{address}/{amount}")
@@ -171,13 +218,89 @@ public interface ContractResource {
             @ApiParam(name = "amount", value = "金额", required = true) @PathParam("amount") Long amount);
 
     @GET
-    @Path("/tx/list/{address}")
+    @Path("/tx/list/{contractAddress}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "获取智能合约的交易列表")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = ContractTransactionInfoDto.class)
     })
     RpcClientResult getTxList(
-            @ApiParam(name = "address", value = "地址", required = true) @PathParam("address") String address);
+            @ApiParam(name = "contractAddress", value = "智能合约地址", required = true)
+            @PathParam("contractAddress") String contractAddress,
+            @ApiParam(name = "pageNumber", value = "页码", required = true)
+            @QueryParam("pageNumber") Integer pageNumber,
+            @ApiParam(name = "pageSize", value = "每页条数", required = false)
+            @QueryParam("pageSize") Integer pageSize,
+            @ApiParam(name = "accountAddress", value = "钱包账户地址")
+            @QueryParam("accountAddress") String accountAddress);
+
+    @GET
+    @Path("/token/list/{address}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "获取NRC20合约的资产列表")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success", response = ContractTokenInfoDto.class)
+    })
+    RpcClientResult getTokenList(
+            @ApiParam(name = "address", value = "钱包账户地址", required = true)
+            @PathParam("address") String address,
+            @ApiParam(name = "pageNumber", value = "页码", required = true)
+            @QueryParam("pageNumber") Integer pageNumber,
+            @ApiParam(name = "pageSize", value = "每页条数", required = false)
+            @QueryParam("pageSize") Integer pageSize);
+
+    @POST
+    @Path("/collection")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "收藏智能合约地址/修改备注名称")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    RpcClientResult contractCollection(@ApiParam(name = "collection", value = "收藏智能合约地址/修改备注名称", required = true) ContractCollection collection);
+
+    @POST
+    @Path("/collection/cancel")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "取消收藏智能合约地址")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    RpcClientResult collectionCancel(@ApiParam(name = "collectionBase", value = "取消收藏参数", required = true) ContractAddressBase collection);
+
+    @GET
+    @Path("/wallet/list/{address}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "获取钱包账户的合约地址列表(账户创建的合约以及钱包收藏的合约)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success", response = ContractAddressDto.class)
+    })
+    RpcClientResult getContractCollectionList(
+            @ApiParam(name = "address", value = "钱包账户地址", required = true)
+            @PathParam("address") String address,
+            @ApiParam(name = "pageNumber", value = "页码", required = true)
+            @QueryParam("pageNumber") Integer pageNumber,
+            @ApiParam(name = "pageSize", value = "每页条数", required = false)
+            @QueryParam("pageSize") Integer pageSize);
+
+    @POST
+    @Path("/unconfirmed/failed/remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "删除创建失败的未确认合约")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    RpcClientResult removeFailedUnconfirmed(@ApiParam(name = "ContractAddressBase", value = "删除未确认的合约", required = true)
+                                                    ContractAddressBase addressBase);
+
+
+    @GET
+    @Path("/export/{address}")
+    @ApiOperation(value = "导出合约编译代码的jar包 ")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success")
+    })
+    void export(@ApiParam(name = "address", value = "账户地址", required = true)
+                @PathParam("address") String address,
+                @Context HttpServletResponse response);
 
 }

@@ -37,6 +37,8 @@ public class RpcClientResult<T> {
 
     private ErrorData errorData;
 
+    private String json;
+
     public boolean isSuccess() {
         return success;
     }
@@ -59,6 +61,14 @@ public class RpcClientResult<T> {
 
     public void setErrorData(ErrorData errorData) {
         this.errorData = errorData;
+    }
+
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
     }
 
     @Override

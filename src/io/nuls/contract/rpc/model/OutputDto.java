@@ -27,8 +27,6 @@ package io.nuls.contract.rpc.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 @ApiModel(value = "outputJSON")
 public class OutputDto {
@@ -98,10 +96,5 @@ public class OutputDto {
 
     public void setTxHash(String txHash) {
         this.txHash = txHash;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

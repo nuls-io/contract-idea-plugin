@@ -26,8 +26,6 @@ package io.nuls.contract.rpc.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author: PierreLuo
@@ -102,17 +100,12 @@ public class ContractTransactionInfoDto {
         this.info = info;
     }
 
-    public int compareTo(long thatBlockHeight) {
-        if (this.blockHeight > thatBlockHeight) {
+    public int compareTo(long thatTime) {
+        if (this.time > thatTime) {
             return -1;
-        } else if (this.blockHeight < thatBlockHeight) {
+        } else if (this.time < thatTime) {
             return 1;
         }
         return 0;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

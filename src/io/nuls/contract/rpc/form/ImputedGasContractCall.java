@@ -1,9 +1,8 @@
 package io.nuls.contract.rpc.form;
 
+import io.nuls.contract.util.ContractUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @desription:
@@ -25,10 +24,8 @@ public class ImputedGasContractCall {
     private String methodDesc;
     @ApiModelProperty(name = "price", value = "执行合约单价", required = true)
     private long price;
-    @ApiModelProperty(name = "password", value = "交易创建者账户密码", required = true)
-    private String password;
     @ApiModelProperty(name = "args", value = "参数列表", required = false)
-    private String[] args;
+    private Object[] args;
 
     public String getSender() {
         return sender;
@@ -78,29 +75,11 @@ public class ImputedGasContractCall {
         this.price = price;
     }
 
-    public String getPassword() {
-        return password;
+    public String[][] getArgs() {
+        return ContractUtil.twoDimensionalArray(args);
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String[] getArgs() {
-        return args;
-    }
-
-    public void setArgs(String[] args) {
+    public void setArgs(Object[] args) {
         this.args = args;
     }
-
-    public void args(String... args) {
-        this.args = args;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
-
 }

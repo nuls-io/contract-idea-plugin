@@ -26,8 +26,6 @@ package io.nuls.contract.rpc.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @Author: PierreLuo
@@ -35,10 +33,20 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @ApiModel(value = "ContractTransferDataDtoJSON")
 public class ContractTransferDataDto {
 
+    @ApiModelProperty(name = "orginTxHash", value = "智能合约交易hash")
+    private String orginTxHash;
     @ApiModelProperty(name = "contractAddress", value = "智能合约地址")
     private String contractAddress;
     @ApiModelProperty(name = "success", value = "调用合约成功与否, 0-失败, 1-成功")
     private byte success;
+
+    public String getOrginTxHash() {
+        return orginTxHash;
+    }
+
+    public void setOrginTxHash(String orginTxHash) {
+        this.orginTxHash = orginTxHash;
+    }
 
     public String getContractAddress() {
         return contractAddress;
@@ -54,10 +62,5 @@ public class ContractTransferDataDto {
 
     public void setSuccess(byte success) {
         this.success = success;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

@@ -64,7 +64,10 @@ public class NulsAnnotator implements Annotator {
                     "java.util.List",
                     "java.util.ArrayList",
                     "java.util.Map",
-                    "java.util.HashMap");
+                    "java.util.HashMap",
+                    "java.util.LinkedHashMap",
+                    "java.util.Set",
+                    "java.util.HashSet");
             // 自定义类型
             List<String> supportClzs = new ArrayList<>();
             List<String> internalClzs = null;

@@ -139,8 +139,8 @@ public class RunPanel extends JPanel {
         if (null != price) {
             if (null == gas) {
                 defaultGas = getDefaultGas();
-                gas = defaultGas;
             }
+            gas = defaultGas;
             priceTextField.setText(price + "");
         }
         if (null != gas) {

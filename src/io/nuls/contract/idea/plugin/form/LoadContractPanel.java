@@ -10,6 +10,8 @@ import io.nuls.contract.idea.plugin.toolwindow.ui.InvokeDialog;
 import io.nuls.contract.idea.plugin.toolwindow.ui.NulsToolWindowPanel;
 import io.nuls.contract.idea.plugin.util.JsonFormater;
 import io.nuls.contract.rpc.form.ContractCall;
+import io.nuls.contract.rpc.form.ImputedGasContractCall;
+import io.nuls.contract.rpc.form.ImputedPrice;
 import io.nuls.contract.rpc.model.ContractTransactionDto;
 import io.nuls.contract.rpc.resource.ContractResource;
 import io.nuls.contract.rpc.resource.ResultfGsonDecoder;
@@ -26,10 +28,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class LoadContractPanel extends JPanel {
     private JPanel contentPane;
@@ -139,8 +139,8 @@ public class LoadContractPanel extends JPanel {
                         ContractCall call = new ContractCall();
                         call.setSender(accountAddress);
                         call.setPassword(password);
-                        call.setGasLimit(0l);
-                        call.setPrice(0l);
+                        call.setPrice(getDefaultPrice());
+                        call.setGasLimit(getDefaultGas(call.getPrice(),method.getName()));
                         call.setValue(0l);
                         call.setRemark(null);
                         call.setContractAddress(contract.getAddress());
@@ -347,6 +347,56 @@ public class LoadContractPanel extends JPanel {
             message.setText("The update result failed. Please click txnHash again.");
             message.setForeground(Color.RED);
             return true;
+        }
+    }
+
+
+    private Long getDefaultPrice() {
+        String accountAddress = accountComboBox.getSelectedItem() == null ? "" : accountComboBox.getSelectedItem().toString();
+        String nodeAddress = nodeComboBox.getSelectedItem() == null ? "" : nodeComboBox.getSelectedItem().toString();
+        ImputedPrice imputedPrice = new ImputedPrice();
+        imputedPrice.setSender(accountAddress);
+        long currentMili = System.currentTimeMillis();
+
+        if (StringUtils.isEmpty(imputedPrice.getSender()) || StringUtils.isEmpty(nodeAddress)) {
+            return null;
+        }
+
+        logManager.append(sdf.format(new Date()) + " " + currentMili + " " + nodeAddress + " DEP-REQ " + imputedPrice.toString());
+        RpcClientResult result = generateContractResource(nodeAddress).imputedPrice(imputedPrice);
+        if (result.isSuccess()) {
+            logManager.append(sdf.format(new Date()) + " " + currentMili + " " + nodeAddress + " DEP-RES " + result.getData().toString());
+            Double price = (Double) result.getData();
+            return price.longValue();
+        } else {
+            return null;
+        }
+    }
+
+    private Long getDefaultGas(Long price,String methodName) {
+        String accountAddress = accountComboBox.getSelectedItem() == null ? "" : accountComboBox.getSelectedItem().toString();
+        String nodeAddress = nodeComboBox.getSelectedItem() == null ? "" : nodeComboBox.getSelectedItem().toString();
+        //获取Gax默认值
+        ImputedGasContractCall gasContractCreate = new ImputedGasContractCall();
+        gasContractCreate.setSender(accountAddress);
+        gasContractCreate.setContractAddress(contract.getAddress());
+        gasContractCreate.setPrice(price);
+        gasContractCreate.setMethodName(methodName);
+
+        if (StringUtils.isEmpty(gasContractCreate.getSender()) || StringUtils.isEmpty(nodeAddress)) {
+            return null;
+        }
+
+        long currentMili = System.currentTimeMillis();
+        logManager.append(sdf.format(new Date()) + " " + currentMili + " " + nodeAddress + " DEP-REQ " + gasContractCreate.toString());
+
+        RpcClientResult result = generateContractResource(nodeAddress).imputedGasCallContract(gasContractCreate);
+        if (result.isSuccess()) {
+            logManager.append(sdf.format(new Date()) + " " + currentMili + " " + nodeAddress + " DEP-RES " + result.getData().toString());
+            Map<String, Double> params = (Map<String, Double>) result.getData();
+            return params.get("gasLimit").longValue();
+        } else {
+            return null;
         }
     }
 }

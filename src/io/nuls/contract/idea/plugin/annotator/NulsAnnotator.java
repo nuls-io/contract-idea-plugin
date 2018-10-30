@@ -61,10 +61,13 @@ public class NulsAnnotator implements Annotator {
                     "java.lang.Exception",
                     "java.lang.RuntimeException",
                     "java.math.BigInteger",
+                    "java.math.BigDecimal",
                     "java.util.List",
                     "java.util.ArrayList",
+                    "java.util.LinkedList",
                     "java.util.Map",
                     "java.util.HashMap",
+                    "java.util.LinkedHashMap",
                     "java.util.Set",
                     "java.util.HashSet");
             // 自定义类型

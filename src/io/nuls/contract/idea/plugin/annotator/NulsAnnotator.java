@@ -62,6 +62,7 @@ public class NulsAnnotator implements Annotator {
                     "java.lang.RuntimeException",
                     "java.math.BigInteger",
                     "java.math.BigDecimal",
+                    "java.util.Collection",
                     "java.util.List",
                     "java.util.ArrayList",
                     "java.util.LinkedList",

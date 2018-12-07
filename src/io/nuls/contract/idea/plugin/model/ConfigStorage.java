@@ -21,7 +21,7 @@ public class ConfigStorage implements PersistentStateComponent<ConfigStorage> {
     private List<NulsAccount> nulsAccounts = new LinkedList<>();
     private List<NulsContract> nulsContracts = new LinkedList<>();
 
-    private boolean nulsSyntaxCheck = true;
+    private boolean nulsSyntaxCheck = false;
 
     private String jarFilePath;
 
